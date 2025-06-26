@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
   return (
@@ -14,7 +14,7 @@ export function Header() {
             alt="Solana Glasses Logo"
             width={144}
             height={72}
-            className="w-18 h-9 md:w-24 md:h-12 lg:w-32 lg:h-16 object-contain mix-blend-difference"
+            className="w-9 h-9 md:w-24 md:h-12 lg:w-32 lg:h-16 object-contain mix-blend-difference"
             priority
           />
         </div>
@@ -23,10 +23,13 @@ export function Header() {
         <Button
           variant="outline"
           className="px-4 py-2 md:px-6 md:py-3 text-sm md:text-base bg-transparent border-2 border-white/40 text-white hover:bg-white/10 hover:border-white/60 transition-all duration-300 mix-blend-difference backdrop-blur-sm"
+          onClick={() =>
+            (window.location.href = "mailto:info@solanaglasses.com")
+          }
         >
           Get in touch
         </Button>
       </div>
     </header>
-  )
+  );
 }
