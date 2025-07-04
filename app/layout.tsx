@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     siteName: "Solana Glasses",
     images: [
       {
-        url: "https://solanaglasses.com/logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Solana Glasses",
+        url: "https://solanaglasses.com/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Solana Glasses Logo",
       },
     ],
     locale: "en_US",
@@ -35,18 +35,19 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Solana Glasses",
     description:
-      "SolanaGlasses are next-gen AI-powered smart glasses built for Solana users. Scan QR codes, make on-chain payments, and interact with crypto using just your voice. Lightweight, fast, and fully integrated with the Solana blockchain.",
+      "SolanaGlasses are next-gen AI-powered smart glasses built for Solana users.",
     site: "@solanaglasses",
     creator: "@solanaglasses",
-    images: ["https://solanaglasses.com/logo.png"],
+    images: ["https://solanaglasses.com/android-chrome-512x512.png"],
   },
   icons: {
-    icon: [{ url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
     shortcut: "/favicon.ico",
-  },
-  other: {
-    discord: "https://discord.gg/gRYzqpTgjj",
-    telegram: "https://t.me/solanaglasses",
   },
 };
 
@@ -60,36 +61,47 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://solanaglasses.com" />
 
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        {/* Favicons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#ffffff" />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Solana Glasses" />
         <meta
           property="og:description"
-          content="SolanaGlasses are next-gen AI-powered smart glasses built for Solana users. Scan QR codes, make on-chain payments, and interact with crypto using just your voice. Lightweight, fast, and fully integrated with the Solana blockchain."
+          content="SolanaGlasses are next-gen AI-powered smart glasses built for Solana users."
         />
         <meta property="og:url" content="https://solanaglasses.com" />
-        <meta
-          property="og:image"
-          content="https://solanaglasses.com/logo.png"
-        />
+        <meta property="og:image" content="/android-chrome-512x512.png" />
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Solana Glasses" />
         <meta
           name="twitter:description"
-          content="SolanaGlasses are next-gen AI-powered smart glasses built for Solana users. Scan QR codes, make on-chain payments, and interact with crypto using just your voice. Lightweight, fast, and fully integrated with the Solana blockchain."
+          content="SolanaGlasses are next-gen AI-powered smart glasses built for Solana users."
         />
-        <meta
-          name="twitter:image"
-          content="https://solanaglasses.com/logo.png"
-        />
+        <meta name="twitter:image" content="/android-chrome-512x512.png" />
         <meta name="twitter:site" content="@solanaglasses" />
         <meta name="twitter:creator" content="@solanaglasses" />
-        {/* Discord */}
+
+        {/* Social Links */}
         <meta name="discord" content="https://discord.gg/gRYzqpTgjj" />
-        {/* Telegram */}
         <meta name="telegram" content="https://t.me/solanaglasses" />
       </head>
       <body>{children}</body>
