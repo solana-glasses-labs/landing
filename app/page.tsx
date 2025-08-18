@@ -188,6 +188,21 @@ function runSelfTests() {
         "#ecosystem .animate-marquee"
       );
       console.assert(!!marqueeExists, "Ecosystem marquee should exist");
+      const cards = Array.from(
+        document.querySelectorAll("#features .glow-card")
+      );
+      cards.slice(0, 4).forEach((c: any, idx) => {
+        const inner = c.querySelector(".card-surface");
+        if (inner) {
+          const diff = Math.abs(c.offsetHeight - inner.offsetHeight);
+          console.assert(
+            diff <= 2,
+            `Card ${
+              idx + 1
+            }: glow-card and card-surface heights should match (diff=${diff}px)`
+          );
+        }
+      });
     }, 0);
     console.log("Self-tests passed ✅");
   } catch (e) {
@@ -319,7 +334,7 @@ export default function App() {
           </h2>
           <Pill>Built for Solana</Pill>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Feature
             icon={QrCode}
             title="Scan and go"
@@ -471,11 +486,11 @@ export default function App() {
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes marquee-reverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         /* glowing animated border for feature cards */
-        .glow-card{ position:relative; }
+        .glow-card{ position:relative; display:flex; }
         .glow-card::before{ content:""; position:absolute; inset:0; border-radius:16px; padding:1px; background: linear-gradient(90deg, rgba(255,255,255,0.75), rgba(255,255,255,0.15), rgba(255,255,255,0.75)); background-size:300% 100%; animation: border-flow 6s linear infinite; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity:.9; }
         @keyframes border-flow{0%{background-position:0% 50%}100%{background-position:100% 50%}}
         /* subtle hover for feature card */
-        .glow-card .card-surface{ transition: transform .25s ease, background-color .25s ease, border-color .25s ease, box-shadow .25s ease; }
+        .glow-card .card-surface{ min-height:100%; display:flex; flex-direction:column; transition: transform .25s ease, background-color .25s ease, border-color .25s ease, box-shadow .25s ease; } 
         .glow-card:hover .card-surface,.glow-card:focus-within .card-surface{ transform: translateY(-3px); background-color: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); box-shadow: 0 10px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.04) inset; }
       `}</style>
     </div>
