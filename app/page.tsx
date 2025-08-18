@@ -17,6 +17,7 @@ import {
   Globe,
   Mail,
 } from "lucide-react";
+import { toast } from "sonner";
 
 /* =====================================================
    QUICK CONFIG
@@ -216,21 +217,51 @@ function runSelfTests() {
 export default function App() {
   const [email, setEmail] = useState("");
   const formRef = useRef<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") runSelfTests();
   }, []);
 
-  const submit = (e: any) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return; // hard stop on double clicks
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert("Enter a valid email");
+      toast.error("Enter a valid email");
       return;
     }
-    // demo handler — replace with your backend
-    alert("Thanks for joining the waitlist. We will be in touch.");
-    setEmail("");
-    formRef.current?.reset();
+
+    try {
+      setIsLoading(true);
+      const promise = fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "landing-page" }),
+      }).then(async (res) => {
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          throw new Error(data?.error || "Something went wrong");
+        }
+        return data as { ok: true; duplicated?: boolean };
+      });
+
+      await toast.promise(promise, {
+        loading: "Adding you to the list…",
+        success: (data) =>
+          data.duplicated
+            ? "You are already on the list"
+            : "You are in. Welcome",
+        error: (err) => err.message || "Could not save your email",
+        duration: 4000,
+      });
+
+      // only runs on success
+      setEmail("");
+      formRef.current?.reset();
+    } catch {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -407,14 +438,43 @@ export default function App() {
               type="email"
               required
               placeholder="your@email.com"
+              disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
               className="h-12 flex-1 rounded-2xl border border-white/15 bg-black/40 px-4 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/20"
             />
             <button
               type="submit"
+              disabled={isLoading}
+              aria-busy={isLoading}
               className="h-12 rounded-2xl bg-white px-6 font-semibold text-black shadow-[0_8px_24px_rgba(255,255,255,0.18)] transition hover:scale-[1.02]"
             >
-              {CONFIG.cta.label}
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <svg
+                    className="h-4 w-4 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeOpacity="0.25"
+                      strokeWidth="4"
+                    />
+                    <path
+                      d="M22 12a10 10 0 0 0-10-10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  Working…
+                </span>
+              ) : (
+                CONFIG.cta.label
+              )}
             </button>
           </form>
         </div>
