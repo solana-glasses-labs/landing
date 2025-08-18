@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Solana Glasses",
@@ -104,7 +105,10 @@ export default function RootLayout({
         <meta name="discord" content="https://discord.gg/gRYzqpTgjj" />
         <meta name="telegram" content="https://t.me/solanaglasses" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster position="top-right" theme="dark" richColors />
+      </body>
     </html>
   );
 }
