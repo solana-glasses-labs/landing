@@ -92,14 +92,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-
-  /* Hide cursor only on non-mobile devices */
-  @media (hover: hover) and (pointer: fine) {
-    * {
-      cursor: none !important;
-    }
-    body {
-      cursor: none !important;
-    }
-  }
 }
